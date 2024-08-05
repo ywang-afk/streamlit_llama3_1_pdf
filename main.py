@@ -92,22 +92,23 @@ if report: # if the report has been loaded by the user
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)
 
-    # rag_chain = (
-    #     {"context": retriever | format_docs, "question": RunnablePassthrough()}
-    #     | prompt
-    #     | llm
-    #     | StrOutputParser()
-    # )
-
     rag_chain = (
-    RunnablePassthrough.assign(
-        context=lambda params: format_docs(params["context"]),
-        answer=lambda params: params["answer"],
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
     )
-    | prompt
-    | llm
-    | StrOutputParser()
-)
+
+#     rag_chain = (
+#     RunnablePassthrough.assign(
+#         context=lambda params: format_docs(params["context"]),
+#         answer=lambda params: params["answer"],
+#     )
+#     | prompt
+#     | llm
+#     | StrOutputParser()
+# )   
+    
 
 # Get the user input
 if user_prompt:
