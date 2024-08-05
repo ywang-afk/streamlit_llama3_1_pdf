@@ -90,8 +90,8 @@ if report: # if the report has been loaded by the user
     prompt = hub.pull("rlm/rag-prompt")
 
     def format_docs(docs):
-        # return "\n\n".join(doc.page_content for doc in docs)
-        return '<br><br>'.join([f'<span style="color:blue;">{doc.page_content}</span>' for doc in docs])
+        return "\n\n".join(doc.page_content for doc in docs)
+        # return '<br><br>'.join([f'<span style="color:blue;">{doc.page_content}</span>' for doc in docs])
 
     rag_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
@@ -127,7 +127,7 @@ if user_prompt:
 
     # llm response
     with st.chat_message("assistant"):
-        st.markdown(response + '\n\n**Relevant Context:**\n\n' + format_docs(context) , unsafe_allow_html=True)
+        st.write(response + '\n\nRelevant Context:\n\n' + format_docs(context))
 
 
 # for chunk in rag_chain.stream("Were there any audit issues identified or financial reporting inaccuracies?"):
