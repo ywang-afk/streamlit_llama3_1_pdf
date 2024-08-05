@@ -9,3 +9,4 @@ streamlit==1.37.0
 protobuf==4.25.4
 pysqlite3-binary
 langchain-community==0.2.11
+pypdf==4.3.1
