@@ -1,4 +1,4 @@
-dotenv
+python-dotenv
 langchain_core
 langchain_chroma
 langchain_openai
