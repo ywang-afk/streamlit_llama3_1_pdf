@@ -1,8 +1,8 @@
 # python-dotenv
-langchain_core
-langchain_chroma
-langchain_openai
-langchain_text_splitters
-langchain_groq
-langchain
-streamlit
+langchain-core==0.2.28
+langchain-chroma==0.1.2
+langchain-openai==0.1.20
+langchain-text-splitters== 0.2.2
+langchain-groq==0.1.9
+langchain==0.2.12
+streamlit==1.37.0
