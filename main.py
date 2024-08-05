@@ -1,5 +1,5 @@
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 # from groq import Groq
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -38,7 +38,7 @@ user_prompt = st.chat_input("Ask a question about the PDF")
 
 # load the rag vector db or create it
 
-load_dotenv()
+# load_dotenv()
 
 wd = os.getcwd()
 
