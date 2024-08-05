@@ -116,15 +116,17 @@ if user_prompt:
     st.chat_message("user").markdown(user_prompt)
     st.session_state.chat_history.append({"role":"user","content":user_prompt})
 
-    # response = rag_chain.invoke(user_prompt)
-    response = rag_chain.invoke({"question": user_prompt, "context": retriever.get_relevant_documents(user_prompt)})
+    response = rag_chain.invoke(user_prompt)
+    # response = rag_chain.invoke({"question": user_prompt, "context": retriever.get_relevant_documents(user_prompt)})
 
-    # st.session_state.chat_history.append({"role":"assistant","content":response})
-    st.session_state.chat_history.append({"role":"assistant","content":response["answer"] + '\n Context: \n' + response["context"]})
+    context = retriever.get_relevant_documents(user_prompt)
+
+    st.session_state.chat_history.append({"role":"assistant","content":response + '\n Relevant Context: \n' + format_docs(context)})
+    # st.session_state.chat_history.append({"role":"assistant","content":response["answer"] + '\n Context: \n' + response["context"]})
 
     # llm response
     with st.chat_message("assistant"):
-        st.markdown(response["answer"] + '\n Context: \n' + response["context"])
+        st.markdown(response + '\n Relevant Context: \n' + format_docs(context))
 
 
 # for chunk in rag_chain.stream("Were there any audit issues identified or financial reporting inaccuracies?"):
