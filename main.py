@@ -92,12 +92,22 @@ if report: # if the report has been loaded by the user
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)
 
+    # rag_chain = (
+    #     {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    #     | prompt
+    #     | llm
+    #     | StrOutputParser()
+    # )
+
     rag_chain = (
-        {"context": retriever | format_docs, "question": RunnablePassthrough()}
-        | prompt
-        | llm
-        | StrOutputParser()
+    RunnablePassthrough.assign(
+        context=lambda params: format_docs(params["context"]),
+        answer=lambda params: params["answer"],
     )
+    | prompt
+    | llm
+    | StrOutputParser()
+)
 
 # Get the user input
 if user_prompt:
@@ -105,17 +115,15 @@ if user_prompt:
     st.chat_message("user").markdown(user_prompt)
     st.session_state.chat_history.append({"role":"user","content":user_prompt})
 
-    # query using RAG chain
-    # for chunk in rag_chain.stream(user_prompt):
-    #     print(chunk, end="", flush=True)
+    # response = rag_chain.invoke(user_prompt)
+    response = rag_chain.invoke({"question": user_prompt, "context": retriever.get_relevant_documents(user_prompt)})
 
-    response = rag_chain.invoke(user_prompt)
-
-    st.session_state.chat_history.append({"role":"assistant","content":response})
+    # st.session_state.chat_history.append({"role":"assistant","content":response})
+    st.session_state.chat_history.append({"role":"assistant","content":response["answer"] + '\n Context: \n' + response["context"]})
 
     # llm response
     with st.chat_message("assistant"):
-        st.markdown(response)
+        st.markdown(response["answer"] + '\n Context: \n' + response["context"])
 
 
 # for chunk in rag_chain.stream("Were there any audit issues identified or financial reporting inaccuracies?"):
