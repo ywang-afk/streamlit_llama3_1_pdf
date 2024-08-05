@@ -8,3 +8,4 @@ langchain==0.2.12
 streamlit==1.37.0
 protobuf==4.25.4
 pysqlite3-binary
+langchain-community==0.2.11
